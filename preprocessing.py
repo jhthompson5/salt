@@ -19,13 +19,13 @@ def getTrainSet():
         file = image_base_filepath+i+'.png'
         img = pyplot.imread(file)
         img = np.dot(img[...,:3],[0.299, 0.587, 0.114])
-        img = np.pad(img,((1,2),(1,2)),'constant')
+        img = np.pad(img,((13,14),(13,14)),'constant')
         images.append(img)
     for i in rle_mask:
         if pd.isna(i):
             i=''
         mask = rle.rle_decode(i,(101,101))
-        mask = np.pad(mask,((1,2),(1,2)),'constant')
+        #mask = np.pad(mask,((13,14),(13,14)),'constant')
         masks.append(mask)
 
     imClean = {
@@ -76,7 +76,7 @@ def processTrainingData():
 
 def processTestingSet():
     import os
-    root_path = 'data/images/'
+    root_path = 'data/test/images/'
     dirList = os.listdir(root_path)
     images = []
     ids = []
@@ -84,7 +84,7 @@ def processTestingSet():
         path = root_path+i
         img = pyplot.imread(path)
         img = np.dot(img[...,:3],[0.299, 0.587, 0.114])
-        img = np.pad(img,((1,2),(1,2)),'constant')
+        img = np.pad(img,((13,14),(13,14)),'constant')
         images.append(img)
         ids.append(i.replace('.png',''))
     testSet = {
@@ -107,3 +107,5 @@ def processTestingSet():
     }
     pickle.dump(dat,open('data/testSet.dat','wb'),-1)
     return dat
+
+processTrainingData()
